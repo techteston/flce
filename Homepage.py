@@ -70,4 +70,4 @@ if st.button('Airport Centrality'):
     st.dataframe(data=closeness_centrality_df_top, width=None, height=None)
 
     eigenvector_centrality = nx.eigenvector_centrality(G)
-    pagerank = nx.pagerank(G)
+#    pagerank = nx.pagerank(G)

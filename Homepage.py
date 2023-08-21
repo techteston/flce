@@ -1,7 +1,8 @@
 import streamlit as st
+import pandas as pd
 
 st.set_page_config(
-    page_title="Grocery Marketplace",
+    page_title="Centrality Analysis",
     page_icon="",
 )
 
@@ -13,18 +14,22 @@ footer {visibility: hidden;}
 """
 st.markdown(hide_st_style,unsafe_allow_html=True)
 
-st.title("The :green[Produce] Marketplace")
-st.subheader('A Marketplace for Grocers, Retailers and Farmers')
+st.title("The :red[Airport Centrality]")
+st.subheader('Understanding the Most Import Airport in the US ')
 
-choice = st.selectbox('Login/SignUp',['Log In','Sign Up'])
-if choice == "Log In":
-    usrid = st.text_input('User ID')
-    paswd = st.text_input('Password',type='password')
-    st.button('Log In')
-else:
-    usrid = st.text_input('User ID')
-    paswd = st.text_input('Password',type='password')
-    st.button('Sign Up')
+df = pd.DataFrame()
+uploaded_file = st.file_uploader("Upload an csv Flights File",type=['csv'])
+if uploaded_file is not None:
+    st.success('File Uploaded Successfully!', icon="✅")
+#    st.balloons()
+    try:
+        df=pd.read_csv(uploaded_file)
+    except:
+        df=pd.read_csv(uploaded_file)
 
-st.write('Selection',choice)
+if len(df) > 0:
+    with st.expander('Sample Records', expanded=False):
+        df2 = df[0:9]
+        st.dataframe(data=df2, width=None, height=None,hide_index=1)
+  
 

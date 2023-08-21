@@ -34,15 +34,15 @@ if len(df) > 0:
         # Create a directed graph from the flight data
         G = nx.DiGraph()
         # Add nodes (airports)
-        li_airports = pd.unique(df2["DESTINATION_AIRPORT_NAME"])
+        li_airports = pd.unique(df["DESTINATION_AIRPORT_NAME"])
         df_airports = pd.DataFrame(li_airports)
-        li_airports = pd.unique(df2["ORIGIN_AIRPORT_NAME"])
+        li_airports = pd.unique(df["ORIGIN_AIRPORT_NAME"])
         df_airports2 = pd.DataFrame(li_airports)
         df_airports = pd.concat([df_airports, df_airports2], ignore_index=True)
         df_airports.drop_duplicates(subset=0,inplace=True)
         airports = df_airports[0].unique()
         G.add_nodes_from(airports)
-        for _, row in df2.iterrows():
+        for _, row in df.iterrows():
             G.add_edge(row['ORIGIN_AIRPORT_NAME'], row['DESTINATION_AIRPORT_NAME'])
         st.dataframe(data=df2, width=None, height=None,hide_index=1)
 

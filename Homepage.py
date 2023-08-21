@@ -31,6 +31,7 @@ if uploaded_file is not None:
 if len(df) > 0:
     with st.expander('Sample Records', expanded=False):
         df2 = df[0:9]
+        st.dataframe(data=df2, width=None, height=None,hide_index=1)
         # Create a directed graph from the flight data
         G = nx.DiGraph()
         # Add nodes (airports)
@@ -44,7 +45,7 @@ if len(df) > 0:
         G.add_nodes_from(airports)
         for _, row in df.iterrows():
             G.add_edge(row['ORIGIN_AIRPORT_NAME'], row['DESTINATION_AIRPORT_NAME'])
-        st.dataframe(data=df2, width=None, height=None,hide_index=1)
+        
 
 if st.button('Airport Centrality'):
     degree_centrality = nx.degree_centrality(G)
@@ -52,21 +53,21 @@ if st.button('Airport Centrality'):
     degree_centrality_df.sort_values(by=["Degree Centrality"],ascending=False,inplace=True)
     degree_centrality_df_top = degree_centrality_df[0:9]
     st.caption("The Airports with the Most Connections 	:small_airplane:")
-    st.dataframe(data=degree_centrality_df_top, width=None, height=None,hide_index=1)
+    st.dataframe(data=degree_centrality_df_top, width=None, height=None)
 
     betweenness_centrality = nx.betweenness_centrality(G)
     betweenness_centrality_df = pd.DataFrame.from_dict(betweenness_centrality, orient='index', columns=['Degree Centrality'])
     betweenness_centrality_df.sort_values(by=["Degree Centrality"],ascending=False,inplace=True)
     betweenness_centrality_df_top = betweenness_centrality_df[0:9]
     st.caption("The Airports with the Most Transits :airplane_departure:")
-    st.dataframe(data=betweenness_centrality_df_top, width=None, height=None,hide_index=1)
+    st.dataframe(data=betweenness_centrality_df_top, width=None, height=None)
 
     closeness_centrality = nx.closeness_centrality(G)
     closeness_centrality_df = pd.DataFrame.from_dict(closeness_centrality, orient='index', columns=['Degree Centrality'])
     closeness_centrality_df.sort_values(by=["Degree Centrality"],ascending=False,inplace=True)
     closeness_centrality_df_top = closeness_centrality_df[0:9]
     st.caption("The Airports with the Most Accessibility :airplane_arriving:")
-    st.dataframe(data=closeness_centrality_df_top, width=None, height=None,hide_index=1)
+    st.dataframe(data=closeness_centrality_df_top, width=None, height=None)
 
     eigenvector_centrality = nx.eigenvector_centrality(G)
     pagerank = nx.pagerank(G)

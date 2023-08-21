@@ -31,18 +31,22 @@ if uploaded_file is not None:
 if len(df) > 0:
     with st.expander('Sample Records', expanded=False):
         df2 = df[0:9]
+        # Create a directed graph from the flight data
+        G = nx.DiGraph()
+        # Add nodes (airports)
+        li_airports = pd.unique(df2["DESTINATION_AIRPORT_NAME"])
+        df_airports = pd.DataFrame(li_airports)
+        li_airports = pd.unique(df2["ORIGIN_AIRPORT_NAME"])
+        df_airports2 = pd.DataFrame(li_airports)
+        df_airports = pd.concat([df_airports, df_airports2], ignore_index=True)
+        df_airports.drop_duplicates(subset=0,inplace=True)
+        airports = df_airports[0].unique()
+        G.add_nodes_from(airports)
+        for _, row in df2.iterrows():
+            G.add_edge(row['ORIGIN_AIRPORT_NAME'], row['DESTINATION_AIRPORT_NAME'])
         st.dataframe(data=df2, width=None, height=None,hide_index=1)
 
 if st.button('Airport Centrality'):
-    # Create a directed graph from the flight data
-    G = nx.DiGraph()
-    # Add nodes (airports)
-    airports = df_airports['AIRPORT'].unique()
-    G.add_nodes_from(airports)
-
-    for _, row in df_flights_data2.iterrows():
-        G.add_edge(row['ORIGIN_AIRPORT_NAME'], row['DESTINATION_AIRPORT_NAME'])
-
     degree_centrality = nx.degree_centrality(G)
     degree_centrality_df = pd.DataFrame.from_dict(degree_centrality, orient='index', columns=['Degree Centrality'])
     degree_centrality_df.sort_values(by=["Degree Centrality"],ascending=False,inplace=True)

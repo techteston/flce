@@ -6,3 +6,4 @@ streamlit-aggrid
 openpyxl
 pulp
 networkx
+scipy
